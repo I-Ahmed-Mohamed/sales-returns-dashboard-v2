@@ -207,11 +207,20 @@ let clients = Object.values(clientsMap).map(c => {
         itm.totalAmt = itm.transactions.reduce((sum, t) => sum + t.total, 0);
         return itm;
     });
-    c.items = itemsArr.sort((a,b) => a.name.localeCompare(b.name));
+    c.items = itemsArr.sort((a,b) => {
+        let numA = parseInt((a.name.match(/d+/) || [0])[0]);
+        let numB = parseInt((b.name.match(/d+/) || [0])[0]);
+        if (numA !== numB) {
+            return numA - numB;
+        }
+        return a.name.localeCompare(b.name);
+    });
     
     c.totalGross = c.items.reduce((sum, itm) => sum + itm.transactions.filter(t=>t.type==='بيع').reduce((s,t)=>s+(t.originalQty*t.price),0), 0);
     c.totalNet = c.items.reduce((sum, itm) => sum + itm.totalAmt, 0);
     c.totalReturns = c.items.reduce((sum, itm) => sum + itm.transactions.filter(t=>t.qty < 0).reduce((s,t)=>s+Math.abs(t.total),0), 0);
+    c.totalPieces = c.items.reduce((sum, itm) => sum + itm.totalQty, 0);
+
     
     return c;
 });

@@ -109,6 +109,12 @@
                             </template>
                         </tbody>
                         <tfoot class="bg-gray-100 font-bold text-gray-800 border-t-[8px] border-gray-800 print:bg-gray-200">
+                            <tr class="border-b border-gray-300 bg-blue-50">
+                                <td colspan="4" class="p-4 text-left text-xl text-blue-900"><i class="fa-solid fa-layer-group no-print ml-2"></i> إجمالي القطع (الكمية الصافية للعميل):</td>
+                                <td colspan="1"></td>
+                                <td class="p-4 text-3xl text-blue-800 text-center font-black" dir="ltr">{{ activeClient.totalPieces }}</td>
+                                <td colspan="2"></td>
+                            </tr>
                             <tr class="border-b border-gray-300">
                                 <td colspan="4" class="p-4 text-left text-xl text-gray-600">إجمالي المبيعات (قبل المرتجعات):</td>
                                 <td colspan="3"></td>
