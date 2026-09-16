@@ -23,24 +23,11 @@ function excelDateToISO(serial) {
 let salesRows = [];
 let returnsRows = [];
 
-if (fs.existsSync('C:/Users/SPEED/Desktop/كارت المبيعات.xlsx')) {
-    let wbSales = xlsx.readFile('C:/Users/SPEED/Desktop/كارت المبيعات.xlsx');
-    salesRows.push(...xlsx.utils.sheet_to_json(wbSales.Sheets['البيانات التفصيلية'], {header:1}).slice(1));
-}
-if (fs.existsSync('C:/Users/SPEED/Desktop/كارت المرتجعات.xlsx')) {
-    let wbReturns = xlsx.readFile('C:/Users/SPEED/Desktop/كارت المرتجعات.xlsx');
-    returnsRows.push(...xlsx.utils.sheet_to_json(wbReturns.Sheets['البيانات التفصيلية'], {header:1}).slice(1));
-}
+if (fs.existsSync('شهر 4/كارت المبيعات 4.xlsx')) { let wb = xlsx.readFile('شهر 4/كارت المبيعات 4.xlsx'); salesRows.push(...xlsx.utils.sheet_to_json(wb.Sheets['البيانات التفصيلية'], {header:1}).slice(1)); }
+if (fs.existsSync('شهر 4/كارت المرتجعات 4.xlsx')) { let wb = xlsx.readFile('شهر 4/كارت المرتجعات 4.xlsx'); returnsRows.push(...xlsx.utils.sheet_to_json(wb.Sheets['البيانات التفصيلية'], {header:1}).slice(1)); }
 
-// Add Month 5
-if (fs.existsSync('كارت مبيعات 5.xlsx')) {
-    let wbSales5 = xlsx.readFile('كارت مبيعات 5.xlsx');
-    salesRows.push(...xlsx.utils.sheet_to_json(wbSales5.Sheets['البيانات التفصيلية'], {header:1}).slice(1));
-}
-if (fs.existsSync('كارت مرتجعات 5.xlsx')) {
-    let wbReturns5 = xlsx.readFile('كارت مرتجعات 5.xlsx');
-    returnsRows.push(...xlsx.utils.sheet_to_json(wbReturns5.Sheets['البيانات التفصيلية'], {header:1}).slice(1));
-}
+if (fs.existsSync('شهر 5/كارت مبيعات 5.xlsx')) { let wb = xlsx.readFile('شهر 5/كارت مبيعات 5.xlsx'); salesRows.push(...xlsx.utils.sheet_to_json(wb.Sheets['البيانات التفصيلية'], {header:1}).slice(1)); }
+if (fs.existsSync('شهر 5/كارت مرتجعات 5.xlsx')) { let wb = xlsx.readFile('شهر 5/كارت مرتجعات 5.xlsx'); returnsRows.push(...xlsx.utils.sheet_to_json(wb.Sheets['البيانات التفصيلية'], {header:1}).slice(1)); }
 
 let invoicesMap = {};
 
