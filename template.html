@@ -144,6 +144,11 @@
             <h3 class="text-2xl font-bold text-gray-500">لا يوجد عملاء مطابقين للبحث</h3>
         </div>
 
+        <!-- Scroll to top button -->
+        <button @click="scrollToTop" class="fixed bottom-8 left-8 bg-blue-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:bg-blue-700 transition-transform transform hover:scale-110 no-print z-50">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+
     </div>
 
     <script>
@@ -189,6 +194,9 @@
                     } catch (err) {
                         console.error('Failed to copy text: ', err);
                     }
+                },
+                scrollToTop() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             }
         }).mount('#app');
