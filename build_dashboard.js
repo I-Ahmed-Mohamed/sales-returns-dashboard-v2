@@ -1,6 +1,5 @@
-
 const fs = require('fs');
-const xlsx = require('C:/Users/SPEED/Desktop/scratch_excel/node_modules/xlsx');
+const xlsx = require('xlsx');
 
 function excelDateToJSDate(serial) {
     if(!serial || isNaN(serial)) return serial;
@@ -21,11 +20,27 @@ function excelDateToISO(serial) {
     return `${y}-${m}-${d}`;
 }
 
-let wbSales = xlsx.readFile('C:/Users/SPEED/Desktop/كارت المبيعات.xlsx');
-let salesRows = xlsx.utils.sheet_to_json(wbSales.Sheets['البيانات التفصيلية'], {header:1}).slice(1);
+let salesRows = [];
+let returnsRows = [];
 
-let wbReturns = xlsx.readFile('C:/Users/SPEED/Desktop/كارت المرتجعات.xlsx');
-let returnsRows = xlsx.utils.sheet_to_json(wbReturns.Sheets['البيانات التفصيلية'], {header:1}).slice(1);
+if (fs.existsSync('C:/Users/SPEED/Desktop/كارت المبيعات.xlsx')) {
+    let wbSales = xlsx.readFile('C:/Users/SPEED/Desktop/كارت المبيعات.xlsx');
+    salesRows.push(...xlsx.utils.sheet_to_json(wbSales.Sheets['البيانات التفصيلية'], {header:1}).slice(1));
+}
+if (fs.existsSync('C:/Users/SPEED/Desktop/كارت المرتجعات.xlsx')) {
+    let wbReturns = xlsx.readFile('C:/Users/SPEED/Desktop/كارت المرتجعات.xlsx');
+    returnsRows.push(...xlsx.utils.sheet_to_json(wbReturns.Sheets['البيانات التفصيلية'], {header:1}).slice(1));
+}
+
+// Add Month 5
+if (fs.existsSync('كارت مبيعات 5.xlsx')) {
+    let wbSales5 = xlsx.readFile('كارت مبيعات 5.xlsx');
+    salesRows.push(...xlsx.utils.sheet_to_json(wbSales5.Sheets['البيانات التفصيلية'], {header:1}).slice(1));
+}
+if (fs.existsSync('كارت مرتجعات 5.xlsx')) {
+    let wbReturns5 = xlsx.readFile('كارت مرتجعات 5.xlsx');
+    returnsRows.push(...xlsx.utils.sheet_to_json(wbReturns5.Sheets['البيانات التفصيلية'], {header:1}).slice(1));
+}
 
 let invoicesMap = {};
 

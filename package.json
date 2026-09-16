@@ -1,0 +1,24 @@
+{
+  "name": "sales-returns-dashboard-v2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "base_logic.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/I-Ahmed-Mohamed/sales-returns-dashboard-v2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/I-Ahmed-Mohamed/sales-returns-dashboard-v2/issues"
+  },
+  "homepage": "https://github.com/I-Ahmed-Mohamed/sales-returns-dashboard-v2#readme",
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
+}
