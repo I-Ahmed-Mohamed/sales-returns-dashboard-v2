@@ -115,7 +115,9 @@ function processRow(row, isReturn) {
     let newName = rawNewName;
 
     // FORCE OVERRIDE for hotels!
-    if (oldName.includes('فنادق')) {
+    let isHotelClient = row[4] && (row[4].includes('سياح') || row[4].includes('فندق') || row[4].includes('آفاق') || row[4].includes('الديار') || row[4].includes('ماريوت'));
+    
+    if (oldName.includes('فنادق') || (isHotelClient && oldName.includes('30'))) {
         if (oldName.includes('احمر') || oldName.includes('أحمر')) {
             newName = 'بيض مائدة احمر (30) شنطة بلاستيك فنادق';
         } else if (oldName.includes('بلد')) {
