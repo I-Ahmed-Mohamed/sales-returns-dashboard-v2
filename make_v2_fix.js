@@ -66,8 +66,8 @@ let clients = Object.values(clientsMap).map(c => {
         return itm;
     });
     c.items = itemsArr.sort((a,b) => {
-        let numA = parseInt((a.name.match(/\d+/) || [0])[0]);
-        let numB = parseInt((b.name.match(/\d+/) || [0])[0]);
+        let numA = parseInt((a.name.match(/\\d+/) || [0])[0]);
+        let numB = parseInt((b.name.match(/\\d+/) || [0])[0]);
         if (numA !== numB) {
             return numA - numB;
         }
