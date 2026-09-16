@@ -162,9 +162,15 @@
                 }
             },
             computed: {
-                activeClient() {
-                    if(!this.selectedClient) return null;
-                    return this.clients.find(c => c.name === this.selectedClient);
+                activeClients() {
+                    let list = this.clients;
+                    if (this.selectedClient !== 'ALL') {
+                        list = list.filter(c => c.name === this.selectedClient);
+                    }
+                    if (this.searchQuery && this.searchQuery.trim() !== '') {
+                        list = list.filter(c => c.name.includes(this.searchQuery.trim()));
+                    }
+                    return list;
                 }
             },
             methods: {
