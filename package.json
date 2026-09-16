@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/I-Ahmed-Mohamed/sales-returns-dashboard-v2#readme",
   "dependencies": {
+    "@vue/compiler-dom": "^3.5.42",
+    "jsdom": "^30.0.1",
     "xlsx": "^0.18.5"
   }
 }
