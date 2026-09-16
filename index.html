@@ -16,7 +16,6 @@
             body { background: white; }
             .shadow, .shadow-md, .shadow-lg { box-shadow: none !important; }
             .bg-white { background-color: transparent !important; }
-            /* Ensure the print background color shows for the footer */
             .print-dark-row { background-color: #1f2937 !important; color: white !important; -webkit-print-color-adjust: exact; }
             .print-green-text { color: #4ade80 !important; }
         }
@@ -43,10 +42,10 @@
                 <p class="text-gray-500 mt-2">عرض حركة الأصناف المجمعة لكل عميل على حدة كفاتورة واحدة</p>
             </div>
             <div class="flex flex-col gap-4 w-full md:w-auto">
-                <select v-model="selectedClient" class="w-full md:w-64 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg font-bold">
-                    <option value="">-- اختر العميل --</option>
-                    <option v-for="client in clients" :value="client.name">{{ client.name }}</option>
-                </select>
+                <input type="text" v-model="selectedClient" list="clients-list" placeholder="🔍 ابحث أو اختر العميل..." class="w-full md:w-80 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg font-bold bg-gray-50">
+                <datalist id="clients-list">
+                    <option v-for="client in clients" :value="client.name"></option>
+                </datalist>
                 <button @click="printPage" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold transition flex items-center justify-center gap-2">
                     <i class="fa-solid fa-print"></i> طباعة الكشف
                 </button>
@@ -68,7 +67,7 @@
                     <table class="w-full text-right text-sm">
                         <thead class="table-header print:bg-gray-200 print:text-black">
                             <tr>
-                                <th class="p-4 text-base w-1/4">الصنف (System Name)</th>
+                                <th class="p-4 text-base w-1/4 border-l border-blue-900">الصنف (الاسم الجديد)</th>
                                 <th class="p-3">التاريخ</th>
                                 <th class="p-3">رقم الفاتورة</th>
                                 <th class="p-3">النوع</th>
@@ -81,40 +80,32 @@
                         <tbody>
                             <template v-for="(item, itemIndex) in activeClient.items" :key="item.name">
                                 <tr v-for="(t, index) in item.transactions" class="border-b border-gray-200 row-hover" :class="{'bg-red-50': t.qty < 0, 'bg-orange-50': t.status === 'partially_returned'}">
-                                    <td class="p-3 border-l bg-gray-50 text-gray-800 font-bold border-gray-200">
-                                        <div class="flex items-center justify-between gap-2">
-                                            <span class="text-base">{{ item.oldName || item.name }}</span>
-                                            <button @click="copyText(item.oldName || item.name)" class="no-print bg-white border border-gray-300 rounded px-2 py-1 text-blue-600 hover:bg-blue-50 transition shadow-sm" title="نسخ اسم السيستم">
-                                                <i class="fa-regular fa-copy"></i> نسخ
+                                    <td class="p-3 border-l bg-white text-gray-800 font-bold border-gray-200" :class="{'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}">
+                                        <div class="flex items-center gap-3">
+                                            <button @click="copyText(item.newName || item.name)" class="no-print text-gray-400 hover:text-blue-600 transition" title="نسخ اسم السيستم">
+                                                <i class="fa-regular fa-copy text-lg"></i>
                                             </button>
+                                            <span class="text-base">{{ item.newName || item.name }}</span>
                                         </div>
                                     </td>
-                                    <td class="p-3 font-semibold">{{ t.date }}</td>
-                                    <td class="p-3 font-mono text-gray-600">{{ t.invId }}</td>
-                                    <td class="p-3">
+                                    <td class="p-3 font-semibold" :class="{'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}">{{ t.date }}</td>
+                                    <td class="p-3 font-mono text-gray-600" :class="{'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}">{{ t.invId }}</td>
+                                    <td class="p-3" :class="{'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}">
                                         <span v-if="t.qty < 0" class="text-red-600 font-bold"><i class="fa-solid fa-arrow-right-arrow-left no-print"></i> {{ t.type }}</span>
                                         <span v-else class="text-green-600 font-bold"><i class="fa-solid fa-check no-print"></i> {{ t.type }}</span>
                                     </td>
-                                    <td class="p-3 text-center text-gray-400 line-through" v-if="t.qty > 0 && t.originalQty !== t.qty">{{ t.originalQty }}</td>
-                                    <td class="p-3 text-center text-gray-400" v-else>
+                                    <td class="p-3 text-center text-gray-400 line-through" v-if="t.qty > 0 && t.originalQty !== t.qty" :class="{'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}">{{ t.originalQty }}</td>
+                                    <td class="p-3 text-center text-gray-400" v-else :class="{'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}">
                                         <span v-if="t.qty > 0">{{ t.originalQty }}</span>
                                         <span v-else>-</span>
                                     </td>
-                                    <td class="p-3 font-bold text-lg text-center" :class="t.qty < 0 ? 'text-red-600' : 'text-gray-800'" dir="ltr">{{ Math.abs(t.qty) }}</td>
-                                    <td class="p-3 text-center">{{ t.price.toLocaleString() }}</td>
-                                    <td class="p-3 font-bold text-center" :class="t.total < 0 ? 'text-red-600' : 'text-blue-600'" dir="ltr">{{ Math.abs(t.total).toLocaleString() }}</td>
+                                    <td class="p-3 font-bold text-lg text-center" :class="[t.qty < 0 ? 'text-red-600' : 'text-gray-800', {'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}]" dir="ltr">{{ Math.abs(t.qty) }}</td>
+                                    <td class="p-3 text-center" :class="{'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}">{{ t.price.toLocaleString() }}</td>
+                                    <td class="p-3 font-bold text-center" :class="[t.total < 0 ? 'text-red-600' : 'text-blue-600', {'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}]" dir="ltr">{{ Math.abs(t.total).toLocaleString() }}</td>
+
                                 </tr>
                                 
-                                <!-- Subtotal row for this item with a colored thick border -->
-                                <tr class="bg-blue-50 border-b-[6px] border-orange-500">
-                                    <td colspan="4" class="p-4 text-left font-bold text-lg text-blue-900 border-l border-blue-200">
-                                        <i class="fa-solid fa-sigma no-print ml-1"></i> إجمالي مباع ({{ item.name }}):
-                                    </td>
-                                    <td class="p-4 text-center font-bold text-gray-500">-</td>
-                                    <td class="p-4 text-center font-black text-2xl text-blue-800" dir="ltr">{{ item.totalQty }}</td>
-                                    <td class="p-4 text-center font-bold text-gray-500">-</td>
-                                    <td class="p-4 text-center font-black text-xl text-blue-800" dir="ltr">{{ item.totalAmt.toLocaleString() }} <span class="text-sm">ج.م</span></td>
-                                </tr>
+
                             </template>
                         </tbody>
                         <tfoot class="bg-gray-100 font-bold text-gray-800 border-t-[8px] border-gray-800 print:bg-gray-200">
