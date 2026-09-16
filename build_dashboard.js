@@ -114,50 +114,22 @@ function processRow(row, isReturn) {
         };
     }
     
-    let oldName = (row[7] || '').toString().trim();
-    let rawNewName = (row[6] || '').toString().trim();
-    
-    let newName = rawNewName;
-    if (!newName && oldName) {
-        if (NAME_MAPPING[oldName]) {
-            newName = NAME_MAPPING[oldName];
-        } else {
-            // Programmatic fallback
-            let type = 'ابيض';
-            if(oldName.includes('بلد')) type = 'بلدي';
-            else if(oldName.includes('حمر')) type = 'احمر';
-            
-            let qtyMatch = oldName.match(/\d+/);
-            let qty = qtyMatch ? qtyMatch[0] : '';
-            
-            let pkg = 'بيضة';
-            if(qty === '30') {
-                if(oldName.includes('شنط')) pkg = 'شنطة بلاستيك';
-                else pkg = 'بيضة-كرتون';
-            }
-            
-            if (qty) {
-                newName = 'بيض مائدة ' + type + ' اورجانيك ( ' + qty + ' ) ' + pkg;
-            } else {
-                newName = oldName;
-            }
-        }
+    // The user explicitly wants the RAW system name (Column H which is index 7)
+    // Sometimes they put data in Column G (index 6) in month 4, but H is the real system name.
+    let systemName = (row[7] || '').toString().trim();
+    if (!systemName) {
+        systemName = (row[6] || '').toString().trim(); // fallback just in case
     }
     
     let item = {
-        newName: newName,
-        oldName: oldName,
+        newName: systemName, 
+        oldName: systemName,
+        name: systemName || 'صنف غير معروف',
         qty: Number(row[8]) || 0,
         price: Number(row[9]) || 0,
         discount: Number(row[10]) || 0,
         total: Number(row[11]) || 0
     };
-    
-    if (!item.newName && !item.oldName) {
-        item.newName = 'صنف غير معروف';
-    }
-    
-    item.name = item.newName || item.oldName;
     
     if (isReturn) {
         invoicesMap[invNo].returns.push(item);
