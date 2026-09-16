@@ -154,9 +154,9 @@
                                             <span v-if="t.qty < 0" class="text-red-600 font-bold"><i class="fa-solid fa-arrow-right-arrow-left no-print"></i> {{ t.type }}</span>
                                             <span v-else class="text-green-600 font-bold"><i class="fa-solid fa-check no-print"></i> {{ t.type }}</span>
                                         </td>
-                                        <td class="p-3 text-center text-gray-400 line-through" v-if="t.qty > 0 && t.originalQty !== t.qty" :class="{'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}">{{ t.originalQty }}</td>
+                                        <td class="p-3 text-center text-gray-400 line-through" v-if="t.type !== 'مرتجع' && t.type !== 'مرتجع (غير مرتبط)' && t.originalQty !== t.qty" :class="{'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}">{{ t.originalQty }}</td>
                                         <td class="p-3 text-center text-gray-400" v-else :class="{'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}">
-                                            <span v-if="t.qty > 0">{{ t.originalQty }}</span>
+                                            <span v-if="t.type !== 'مرتجع' && t.type !== 'مرتجع (غير مرتبط)'">{{ t.originalQty }}</span>
                                             <span v-else>-</span>
                                         </td>
                                         <td class="p-3 font-bold text-lg text-center" :class="[t.qty < 0 ? 'text-red-600' : 'text-gray-800', {'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}]" dir="ltr">{{ Math.abs(t.qty) }}</td>
