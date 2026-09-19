@@ -146,10 +146,15 @@ function processRow(row, isReturn) {
         }
     }
     
+    
     // Global override to catch pre-existing incorrect names from Excel column 6
     if (newName === 'بيض مائدة ابيض اورجانيك (30) شنطة بلاستيك') {
         newName = 'بيض ابيض مغلف (30) قطعة';
     }
+    if (oldName.includes('بيض ابيض مغلف 30 قطعة')) {
+        newName = 'بيض ابيض مغلف (30) قطعة';
+    }
+
     if (newName === 'بيض مائدة ابيض اورجانيك ( 18 ) بيضة' || newName === 'بيض مائدة ابيض اورجانيك (18) بيضة') {
         newName = 'بيض ابيض مغلف (18) قطعة';
     }
