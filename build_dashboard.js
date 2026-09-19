@@ -144,6 +144,11 @@ function processRow(row, isReturn) {
         }
     }
     
+    // Global override to catch pre-existing incorrect names from Excel column 6
+    if (newName === 'بيض مائدة ابيض اورجانيك (30) شنطة بلاستيك') {
+        newName = 'بيض ابيض مغلف (30) قطعة';
+    }
+    
     let item = {
         newName: newName,
         oldName: oldName,
