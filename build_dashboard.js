@@ -170,20 +170,23 @@ function processRow(row, isReturn) {
     let isCarrefourItem = oldName.includes('كارفور');
     
     if (isCarrefourClient || isCarrefourItem) {
-        if (oldName.includes('سمارت')) {
-             let t = 'ابيض';
-             if(oldName.includes('بلد')) t = 'بلدي';
-             else if(oldName.includes('حمر')) t = 'احمر';
-             let qMatch = oldName.match(/\d+/);
-             let q = qMatch ? qMatch[0] : '';
+        let t = 'ابيض';
+        if(oldName.includes('بلد') || newName.includes('بلد')) t = 'بلدي';
+        else if(oldName.includes('حمر') || newName.includes('حمر')) t = 'احمر';
+        
+        let qMatch = oldName.match(/\d+/) || newName.match(/\d+/);
+        let q = qMatch ? qMatch[0] : '';
+        
+        if (q === '10' || q === '15') {
+            // Force Smart for 10 and 15 for Carrefour
+            newName = 'بيض مائدة ' + t + ' سمارت ( ' + q + ' ) قطعة كارفور';
+        } else if (oldName.includes('سمارت')) {
              if (q) {
                  newName = 'بيض مائدة ' + t + ' سمارت ' + (q==='30' ? '('+q+')' : '( '+q+' )') + ' قطعة كارفور';
              }
         } else {
             if (!newName.includes('كارفور')) {
                 newName = newName.replace('-كرتون', '').trim();
-                let qMatch = newName.match(/\d+/);
-                let q = qMatch ? qMatch[0] : '';
                 if (q === '30') {
                     if (newName.includes('احمر')) {
                         newName = 'بيض مائدة احمر اورجانيك ( 30 ) بيضة-كارفور';
@@ -191,7 +194,7 @@ function processRow(row, isReturn) {
                         newName = 'بيض مائدة ابيض اورجانيك (30) بيضة-كارفور';
                     }
                 } else {
-                    if (!newName.includes('بيضة')) newName += ' بيضة';
+                    if (!newName.includes('بيضة') && !newName.includes('قطعة')) newName += ' بيضة';
                     newName += ' كارفور';
                 }
             }
