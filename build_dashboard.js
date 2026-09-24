@@ -392,6 +392,48 @@ invoices.forEach(inv => {
     });
 });
 
+
+// --- CROSS-INVOICE RECONCILIATION ---
+// For each client and item, match unlinked returns to sales with the same price!
+Object.values(clientsMap).forEach(c => {
+    Object.values(c.items).forEach(itm => {
+        let returns = itm.transactions.filter(t => t.type.includes('مرتجع') && t.qty < 0);
+        let sales = itm.transactions.filter(t => t.type.includes('بيع') && t.qty > 0);
+        
+        returns.forEach(r => {
+            let qtyToDeduct = Math.abs(r.qty);
+            sales.forEach(s => {
+                if (Math.abs(s.price - r.price) < 0.1 && qtyToDeduct > 0 && s.qty > 0) {
+                    let deduct = Math.min(s.qty, qtyToDeduct);
+                    s.qty -= deduct;
+                    s.total = s.qty * s.price;
+                    
+                    if (s.qty < s.originalQty) {
+                        s.status = 'partially_returned';
+                    }
+                    if (s.qty === 0) {
+                        s.status = 'fully_returned';
+                    }
+                    
+                    qtyToDeduct -= deduct;
+                }
+            });
+            
+            if (qtyToDeduct === 0) {
+                r.qty = 0;
+                r.total = 0;
+                r.status = 'crossed_out';
+            } else {
+                r.qty = -qtyToDeduct;
+                r.total = -qtyToDeduct * r.price;
+            }
+        });
+        
+        // Filter out crossed out returns so they don't show in the UI!
+        itm.transactions = itm.transactions.filter(t => t.status !== 'crossed_out');
+    });
+});
+
 // Finalize clients array
 let clients = Object.values(clientsMap).map(c => {
     let itemsArr = Object.values(c.items).map(itm => {
