@@ -216,29 +216,22 @@ function processRow(row, isReturn) {
         let q = qMatch ? qMatch[0] : '';
         
         if (q === '10' || q === '15') {
-            // Force Smart for 10 and 15 for Carrefour
             newName = 'بيض مائدة ' + t + ' سمارت ( ' + q + ' ) قطعة كارفور';
-        } else if (oldName.includes('سمارت')) {
-             if (q) {
-                 newName = 'بيض مائدة ' + t + ' سمارت ' + (q==='30' ? '('+q+')' : '( '+q+' )') + ' قطعة كارفور';
-             }
+        } else if (q === '30') {
+            if (t === 'احمر') {
+                newName = 'بيض مائدة احمر سمارت (30) بيضة-كارفور';
+            } else {
+                newName = 'بيض مائدة ' + t + ' سمارت (30) بيضة-كارفور';
+            }
         } else {
+            // Fallback for anything else (shouldn't happen but just in case)
             if (!newName.includes('كارفور')) {
                 newName = newName.replace('-كرتون', '').trim();
-                if (q === '30') {
-                    if (newName.includes('احمر')) {
-                        newName = 'بيض مائدة احمر اورجانيك ( 30 ) بيضة-كارفور';
-                    } else if (newName.includes('ابيض')) {
-                        newName = 'بيض مائدة ابيض اورجانيك (30) بيضة-كارفور';
-                    }
-                } else {
-                    if (!newName.includes('بيضة') && !newName.includes('قطعة')) newName += ' بيضة';
-                    newName += ' كارفور';
-                }
+                if (!newName.includes('بيضة') && !newName.includes('قطعة')) newName += ' بيضة';
+                newName += ' كارفور';
             }
         }
     }
-
     if (newName) newName = newName.replace(/\s+/g, ' ').trim();
     if (oldName) oldName = oldName.replace(/\s+/g, ' ').trim();
 
