@@ -218,16 +218,15 @@ function processRow(row, isReturn) {
         if (q === '10' || q === '15') {
             newName = 'بيض مائدة ' + t + ' سمارت ( ' + q + ' ) قطعة كارفور';
         } else if (q === '30') {
+            newName = 'بيض مائدة ' + t + ' سمارت (30) قطعة كارفور';
             if (t === 'احمر') {
-                newName = 'بيض مائدة احمر سمارت (30) بيضة-كارفور';
-            } else {
-                newName = 'بيض مائدة ' + t + ' سمارت (30) بيضة-كارفور';
+                newName = 'بيض مائدة احمر سمارت (30) قطعة كارفور';
             }
         } else {
-            // Fallback for anything else (shouldn't happen but just in case)
+            // Fallback for anything else
             if (!newName.includes('كارفور')) {
                 newName = newName.replace('-كرتون', '').trim();
-                if (!newName.includes('بيضة') && !newName.includes('قطعة')) newName += ' بيضة';
+                if (!newName.includes('بيضة') && !newName.includes('قطعة')) newName += ' قطعة';
                 newName += ' كارفور';
             }
         }
