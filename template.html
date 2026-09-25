@@ -167,7 +167,7 @@
                                     <th class="p-3 text-center">الكمية الأصلية</th>
                                     <th class="p-3 text-center">الكمية الصافية</th>
                                     <th class="p-3 text-center">السعر</th>
-                                    <th class="p-3 text-center text-indigo-700 bg-indigo-50" v-if="activeClient && activeClient.name.includes('سبينيس')">صافي السعر</th>
+                                    <th class="p-3 text-center" v-if="activeClient && activeClient.name.includes('سبينيس')">صافي السعر</th>
                                     <th class="p-3 text-center">الإجمالي</th>
                                 </tr>
                             </thead>
@@ -195,7 +195,7 @@
                                         </td>
                                         <td class="p-3 font-bold text-lg text-center" :class="[t.qty < 0 ? 'text-red-600' : 'text-gray-800', {'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}]" dir="ltr">{{ Math.abs(t.qty) }}</td>
                                         <td class="p-3 text-center" :class="{'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}">{{ t.price.toLocaleString() }}</td>
-                                        <td class="p-3 text-center font-bold text-indigo-700 bg-indigo-50" :class="{'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}" dir="ltr" v-if="activeClient && activeClient.name.includes('سبينيس')">{{ (Math.abs(t.qty) > 0 ? Math.abs(t.total) / Math.abs(t.qty) : t.price).toLocaleString(undefined, {maximumFractionDigits: 3}) }}</td>
+                                        <td class="p-3 text-center font-bold" :class="{'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}" dir="ltr" v-if="activeClient && activeClient.name.includes('سبينيس')">{{ (Math.abs(t.qty) > 0 ? Math.abs(t.total) / Math.abs(t.qty) : t.price).toLocaleString(undefined, {maximumFractionDigits: 3}) }}</td>
                                         <td class="p-3 font-bold text-center" :class="[t.total < 0 ? 'text-red-600' : 'text-blue-600', {'border-t-4 border-t-orange-500': index === 0 && itemIndex !== 0}]" dir="ltr">{{ Math.abs(t.total).toLocaleString() }}</td>
                                     </tr>
                                 </template>
